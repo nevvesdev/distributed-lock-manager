@@ -2,4 +2,4 @@ bin/
 *.exe
 *.out
 vendor/
-.env
+.envbin/
