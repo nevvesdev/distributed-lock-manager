@@ -6,6 +6,7 @@ require (
 	github.com/alicebob/miniredis/v2 v2.38.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/go-chi/chi/v5 v5.3.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/redis/go-redis/v9 v9.22.0 // indirect
 	github.com/stretchr/testify v1.11.1 // indirect
