@@ -7,8 +7,11 @@ import (
 	"os"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
 	applock "github.com/nevvesdev/distributed-lock-manager/internal/application/lock"
 	infrahttp "github.com/nevvesdev/distributed-lock-manager/internal/infra/http"
+	"github.com/nevvesdev/distributed-lock-manager/internal/infra/metrics"
 	infraredis "github.com/nevvesdev/distributed-lock-manager/internal/infra/redis"
 )
 
@@ -35,14 +38,21 @@ func main() {
 	}
 	slog.Info("conectado ao Redis", "addr", redisAddr)
 
+	m := metrics.New()
 	repo := infraredis.NewLockRepository(redisClient)
-	service := applock.NewLockService(repo)
+	base := applock.NewLockService(repo)
+	service := applock.NewInstrumentedLockService(base, m)
+
 	router := infrahttp.NewRouter(service)
+
+	mux := http.NewServeMux()
+	mux.Handle("/metrics", promhttp.Handler())
+	mux.Handle("/", router)
 
 	addr := ":8080"
 	server := &http.Server{
 		Addr:         addr,
-		Handler:      router,
+		Handler:      mux,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}

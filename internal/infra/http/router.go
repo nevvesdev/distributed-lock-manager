@@ -10,7 +10,7 @@ import (
 )
 
 // monta o roteador HTTP com todos os endpoints de lock.
-func NewRouter(service *applock.LockService) http.Handler {
+func NewRouter(service applock.Service) http.Handler {
 	r := chi.NewRouter()
 
 	r.Use(middleware.Logger)

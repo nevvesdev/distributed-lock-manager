@@ -13,11 +13,11 @@ import (
 
 // expõe operações de lock distribuído via HTTP.
 type LockHandler struct {
-	service *applock.LockService
+	service applock.Service
 }
 
 // cria um novo LockHandler com o serviço fornecido.
-func NewLockHandler(service *applock.LockService) *LockHandler {
+func NewLockHandler(service applock.Service) *LockHandler {
 	return &LockHandler{service: service}
 }
 
